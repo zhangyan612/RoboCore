@@ -8,10 +8,13 @@ app = Flask(__name__)
 def index():
     return "<p>hello this is aiy</p>"
 
-@app.route('/control')
+@app.route('/control/')
 def control():
-    return render_template('control.html')
-
+    try:
+        return render_template('control.html')
+    except Exception as e:
+        return str(e)
+    
 @app.route('/sound/<text>')
 def sound(text):
     aiy.audio.say(text)
