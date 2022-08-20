@@ -1,4 +1,5 @@
 from flask import Flask, render_template
+import aiy.audio
 
 app = Flask(__name__)
 
@@ -9,6 +10,7 @@ def index():
 
 @app.route('/sound/<text>')
 def sound(text):
+    aiy.audio.say(text)
     return 'try to make sound ' + text
 
 #record
