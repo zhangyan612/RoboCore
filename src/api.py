@@ -1,5 +1,5 @@
 from flask import Flask, render_template
-import aiy.audio
+# import aiy.audio
 
 app = Flask(__name__)
 
@@ -8,7 +8,7 @@ app = Flask(__name__)
 def index():
     return "<p>hello this is aiy</p>"
 
-@app.route('/control/')
+@app.route('/control')
 def control():
     try:
         return render_template('control.html')
@@ -17,7 +17,7 @@ def control():
     
 @app.route('/sound/<text>')
 def sound(text):
-    aiy.audio.say(text)
+    # aiy.audio.say(text)
     return 'try to make sound ' + text
 
 #record
@@ -30,4 +30,4 @@ def hello():
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=80)
+    app.run(host='0.0.0.0', port=3000)
