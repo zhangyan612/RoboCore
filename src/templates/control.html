@@ -1,11 +1,62 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>FlaskApp</title>
-</head>
-<body>
-    <h1>Hello World!</h1>
-    <h2>Welcome to FlaskApp!</h2>
-</body>
+<html ng-app="testApp">
+  <head>
+    <title>Robotic Control page</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
+  </head>
+  <body ng-controller="testController">
+    <h2>Robotic Control</h2>
+    <p>{{home}}</p>
+    <input ng-model="servoData.command1">
+    <input ng-model="servoData.command2">
+    <input ng-model="servoData.command3">
+    <input ng-model="servoData.command4">
+    <input ng-model="servoData.command5">
+    <input ng-model="servoData.command6">
+
+    <button ng-click="postRequest()">Send Command test</button>
+    <p>{{response}}</p>
+
+    <script>
+        var testApp = angular.module("testApp", []);
+
+        testApp.controller("testController", function($scope, $http) {
+        $scope.home = "This is the homepage";
+        $scope.servoData = {
+            command1: 90, 
+            command2: 90, 
+            command3: 90, 
+            command4: 90, 
+            command5: 90, 
+            command6: 10, 
+        };
+
+        $scope.getRequest = function() {
+            console.log("I've been pressed!");
+            $http.get("http://urlforapi.com/get?name=Elliot").then(
+                function successCallback(response) {
+                    $scope.response = response;
+                },
+                function errorCallback(response) {
+                    console.log("Unable to perform get request");
+                }
+            );
+        };
+
+            // Our POST request function
+        $scope.postRequest = function() {
+            $http.post("/servo", $scope.servoData).then(
+                function successCallback(response) {
+                    $scope.response = response;
+                    console.log("Successfully POST-ed data");
+                },
+                function errorCallback(response) {
+                    console.log("POST-ing of data failed");
+                }
+            );
+        };
+            
+    });
+    </script>
+
+  </body>
 </html>

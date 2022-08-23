@@ -1,4 +1,13 @@
-// Example 5 - Receive with start- and end-markers combined with parsing
+
+#include <Braccio.h>
+#include <Servo.h>
+
+Servo base;
+Servo shoulder;
+Servo elbow;
+Servo wrist_rot;
+Servo wrist_ver;
+Servo gripper;
 
 const byte numChars = 32;
 char receivedChars[numChars];
@@ -23,6 +32,7 @@ void setup() {
     Serial.begin(9600);
     Serial.println("This demo expects 3 pieces of data - text, an integer and a floating point value");
     Serial.println("Enter data in this style <Servo, 12, 22, 55, 77, 66, 33>  ");
+    Braccio.begin();
 }
 
 //============
@@ -34,7 +44,9 @@ void loop() {
             // this temporary copy is necessary to protect the original data
             //   because strtok() used in parseData() replaces the commas with \0
         parseData();
-        showParsedData();
+        // actual move the servo
+        moveServo();
+        sendParsedData();
         newData = false;
     }
 }
@@ -73,6 +85,10 @@ void recvWithStartEndMarkers() {
     }
 }
 
+void moveServo() {
+    Braccio.ServoMovement(20, command1, command2, command3, command4, command5, command6);  
+}
+
 //============
 
 void parseData() {      // split the data into its parts
@@ -107,16 +123,16 @@ void parseData() {      // split the data into its parts
 
 //============
 
-void showParsedData() {
-    Serial.print("Text ");
+void sendParsedData() {
+    Serial.print("Command ");
     Serial.println(messageFromPC);
-    Serial.print("Move Commands: ");
-    Serial.println(command1);
-    Serial.println(command2);
-    Serial.println(command3);
-    Serial.println(command4);
-    Serial.println(command5);
-    Serial.println(command6);
+    Serial.print("Direction: ");
+    Serial.print(command1);
+    Serial.print(command2);
+    Serial.print(command3);
+    Serial.print(command4);
+    Serial.print(command5);
+    Serial.print(command6);
 
     // Serial.print("Float ");
     // Serial.println(floatFromPC);
